@@ -26,17 +26,23 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,sans
 
 .top-bar{height:6px;background:linear-gradient(90deg,var(--accent),var(--gold),var(--accent))}
 
-header{padding:18px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
-.brand b{font-family:'Bebas Neue';font-size:22px;letter-spacing:1px;font-weight:400}
-.brand-sub{font-family:'Barlow Condensed';font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;text-align:right;line-height:1.2}
+.brand b{font-family:'Bebas Neue';font-size:20px;letter-spacing:1px;font-weight:400}
+.brand-sub{font-family:'Barlow Condensed';font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;text-align:right;line-height:1.2}
 
-.nav-tabs{display:flex;border-bottom:1px solid var(--line);background:var(--surface);overflow-x:auto;-webkit-overflow-scrolling:touch}
-.nav-tab{flex:1;min-width:0;padding:14px 12px;text-align:center;font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:1.5px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
+.nav-tabs{display:flex;border-bottom:1px solid var(--line);background:var(--surface);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.nav-tabs::-webkit-scrollbar{display:none}
+.nav-tab{flex:0 0 auto;padding:14px 18px;text-align:center;font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:1.5px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
 .nav-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 .nav-tab:hover{color:var(--text)}
+@media(max-width:420px){
+  .nav-tab{padding:12px 14px;letter-spacing:1px;font-size:12px}
+  header{padding:12px 14px}
+  .brand b{font-size:18px}
+}
 
-main{max-width:640px;margin:0 auto;padding:28px 18px 80px}
+main{max-width:640px;margin:0 auto;padding:24px 14px 80px}
 .section{display:none}
 .section.active{display:block}
 
@@ -141,15 +147,102 @@ input:focus,select:focus{outline:none;border-color:var(--accent)}
 .btn-wa{background:var(--green);color:#06210f;box-shadow:0 8px 26px -10px var(--green)}
 .err{color:#f0a0a0;font-size:13px;margin-top:8px;display:none}
 
-/* SUCCESS */
-#successWrap{display:none;text-align:center;padding:14px 6px}
-#successWrap .ring{width:84px;height:84px;border-radius:50%;background:rgba(46,204,113,.1);border:2px solid var(--accent);display:grid;place-items:center;margin:0 auto 18px}
-#successWrap h3{font-family:'Bebas Neue';font-weight:400;font-size:32px;letter-spacing:.5px;margin-bottom:8px}
-#successWrap p{color:#d6d6d6;font-size:15px;line-height:1.5;max-width:34ch;margin:0 auto 14px}
-#successWrap .nums-res{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
-.codigo-box{background:var(--surface);border:1px dashed var(--gold);border-radius:12px;padding:14px;margin:16px 0;text-align:center}
+/* TIMER */
+.timer-bar{background:linear-gradient(90deg,rgba(245,158,11,.1),rgba(245,197,24,.08));border:1px solid rgba(245,158,11,.3);border-radius:14px;padding:16px;text-align:center;margin-bottom:18px}
+.timer-bar .timer-label{font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:2px;font-size:12px;color:var(--muted);margin-bottom:6px}
+.timer-bar .timer-count{font-family:'Bebas Neue';font-size:42px;color:#f59e0b;letter-spacing:3px;line-height:1}
+.timer-bar.expired{border-color:var(--danger);background:rgba(226,59,59,.08)}
+.timer-bar.expired .timer-count{color:var(--danger)}
+
+/* PAGO */
+#pagoWrap{display:none}
+.pago-section{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:16px}
+.pago-section h3{font-family:'Bebas Neue';font-weight:400;font-size:26px;letter-spacing:.5px;margin-bottom:4px}
+.pago-section .sub{color:var(--muted);font-size:14px;margin-bottom:16px}
+.pago-metodos{display:flex;flex-direction:column;gap:10px}
+.pago-metodo{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px}
+.pago-metodo .pm-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.pago-metodo .pm-info{flex:1;min-width:0}
+.pago-metodo .pm-name{font-weight:700;font-size:14px;margin-bottom:2px}
+.pago-metodo .pm-detail{color:var(--muted);font-size:13px;word-break:break-all}
+
+/* RECIBO / SUCCESS */
+#reciboWrap{display:none;padding:14px 0}
+.recibo-card{background:var(--surface);border:1px solid var(--accent);border-radius:18px;padding:24px 20px;margin-bottom:18px}
+.recibo-header{text-align:center;margin-bottom:18px}
+.recibo-header .ring{width:72px;height:72px;border-radius:50%;background:rgba(46,204,113,.1);border:2px solid var(--accent);display:grid;place-items:center;margin:0 auto 14px}
+.recibo-header h3{font-family:'Bebas Neue';font-weight:400;font-size:30px;letter-spacing:.5px;margin-bottom:4px}
+.recibo-header p{color:var(--muted);font-size:14px}
+.recibo-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.recibo-row:last-child{border-bottom:none}
+.recibo-row .rl{color:var(--muted)}
+.recibo-row .rv{font-weight:600;text-align:right;max-width:60%}
+.recibo-nums{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:14px 0}
+.codigo-box{background:var(--surface-2);border:1px dashed var(--gold);border-radius:12px;padding:14px;margin:16px 0;text-align:center}
 .codigo-box .lbl{font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--muted);margin-bottom:4px}
 .codigo-box .code{font-family:'Bebas Neue';font-size:28px;color:var(--gold);letter-spacing:3px}
+.motivacion{background:linear-gradient(135deg,rgba(46,204,113,.08),rgba(245,197,24,.06));border:1px solid rgba(46,204,113,.2);border-radius:14px;padding:20px;text-align:center;margin-bottom:18px}
+.motivacion .emoji{font-size:36px;margin-bottom:8px}
+.motivacion p{color:#d6d6d6;font-size:15px;line-height:1.6;font-style:italic}
+.motivacion .bold{color:var(--accent);font-weight:700;font-style:normal}
+.btn-group{display:flex;flex-direction:column;gap:10px}
+
+/* PROGRESS BAR */
+.progress-wrap{margin-top:12px}
+.progress-bar-track{width:100%;height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:4px;transition:width .3s}
+.progress-text{font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:1px;font-size:11px;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between}
+
+/* GRID TOOLS */
+.grid-tools{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.grid-tools input{flex:1;min-width:100px;padding:10px 14px;background:var(--surface);border:1px solid var(--line);border-radius:10px;color:var(--text);font-family:'DM Sans';font-size:14px}
+.grid-tools input:focus{outline:none;border-color:var(--accent)}
+.tool-btn{padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:1px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:border-color .15s,background .15s}
+.tool-btn:hover{border-color:var(--accent);background:var(--accent-soft)}
+.tool-btn.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+
+/* STICKY CART */
+.sticky-cart{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:2px solid var(--accent);padding:12px 18px;z-index:100;transform:translateY(100%);transition:transform .25s ease}
+.sticky-cart.visible{transform:translateY(0)}
+.sc-inner{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:14px}
+.sc-info{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.sc-count{font-family:'Bebas Neue';font-size:22px;color:var(--accent);background:var(--accent-soft);min-width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:10px;flex-shrink:0}
+.sc-text{font-size:13px;line-height:1.3;min-width:0}
+.sc-text .sc-total{font-weight:700;color:var(--accent);font-size:16px}
+.sc-btn{padding:12px 20px;background:var(--accent);color:#fff;border:none;border-radius:12px;font-family:'DM Sans';font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.sc-btn:active{transform:scale(.97)}
+
+@media(max-width:420px){
+  .grid-tools{gap:6px}
+  .grid-tools input{padding:9px 12px;font-size:13px;min-width:80px}
+  .tool-btn{padding:9px 10px;font-size:11px;letter-spacing:.5px}
+  .sc-inner{gap:10px}
+  .sc-count{font-size:18px;min-width:34px;height:34px}
+  .sc-text{font-size:12px}
+  .sc-btn{padding:10px 16px;font-size:13px}
+  .boletos-grid{grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:4px;padding:4px}
+  .boleto{font-size:14px}
+  .info-bar{gap:6px}
+  .info-item{padding:10px 8px;min-width:70px}
+  .info-item .val{font-size:22px}
+  .verificador-input-wrap{flex-direction:column}
+  .verificador-input-wrap button{width:100%}
+}
+
+/* PICKER MODE (4+ cifras) */
+.picker-box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;text-align:center;margin-bottom:14px}
+.picker-box .pk-label{font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:1.5px;font-size:12px;color:var(--muted);margin-bottom:12px}
+.picker-row{display:flex;gap:8px;max-width:340px;margin:0 auto}
+.picker-row input{flex:1;text-align:center;font-family:'Bebas Neue';font-size:26px;letter-spacing:4px;padding:14px}
+.picker-row button{flex-shrink:0;padding:14px 20px;background:var(--accent);color:#fff;border:none;border-radius:11px;font-family:'DM Sans';font-weight:700;font-size:15px;cursor:pointer}
+.picker-row button:active{transform:scale(.97)}
+.pk-status{margin-top:10px;font-size:13px;min-height:20px}
+.pk-btns{display:flex;gap:8px;justify-content:center;margin-bottom:14px}
+.cifras-badge{display:inline-block;font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:1px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.3);color:var(--blue)}
+
+/* SHOW MORE */
+.show-more-btn{width:100%;padding:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;color:var(--muted);font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:1.5px;font-size:13px;font-weight:600;cursor:pointer;margin-top:10px;transition:border-color .15s,color .15s}
+.show-more-btn:hover{border-color:var(--accent);color:var(--accent)}
 
 /* GANADOR BANNER */
 .ganador-banner{background:linear-gradient(135deg,rgba(245,197,24,.12),rgba(46,204,113,.12));border:2px solid var(--gold);border-radius:18px;padding:24px;text-align:center;margin-bottom:22px}
@@ -221,6 +314,7 @@ footer a{color:var(--accent);text-decoration:none}
       <div class="detalle-header">
         <h2 id="detNombre"></h2>
         <div class="premio-big" id="detPremio"></div>
+        <div id="detLoteria"></div>
         <p class="desc" id="detDesc"></p>
       </div>
       <div class="info-bar" id="detInfo"></div>
@@ -233,7 +327,28 @@ footer a{color:var(--accent);text-decoration:none}
           <div class="leyenda-item"><div class="leyenda-dot apart"></div> Apartado</div>
           <div class="leyenda-item"><div class="leyenda-dot pag"></div> Pagado</div>
         </div>
+        <div class="grid-tools">
+          <input type="text" id="searchBoleto" placeholder="Buscar n&uacute;mero..." oninput="filtrarGrid()">
+          <button class="tool-btn" onclick="seleccionarAleatorio()">&#x1F3B2; Aleatorio</button>
+          <button class="tool-btn" id="btnToggleVendidos" onclick="toggleVendidos()">Ocultar vendidos</button>
+        </div>
+        <div id="detProgress"></div>
         <div class="boletos-grid" id="boletosGrid"></div>
+        <button class="show-more-btn" id="showMoreBtn" style="display:none" onclick="showMoreBoletos()"></button>
+        <div id="pickerMode" style="display:none">
+          <div class="picker-box">
+            <div class="pk-label">Escribe el n&uacute;mero que deseas</div>
+            <div class="picker-row">
+              <input type="text" id="pickerInput" placeholder="Ej: 0042" inputmode="numeric" onkeydown="if(event.key==='Enter')agregarNumeroPicker()">
+              <button onclick="agregarNumeroPicker()">Agregar</button>
+            </div>
+            <div class="pk-status" id="pickerStatus"></div>
+          </div>
+          <div class="pk-btns">
+            <button class="tool-btn" onclick="seleccionarAleatorio()">&#x1F3B2; N&uacute;mero aleatorio</button>
+            <button class="tool-btn" onclick="buscarDisponibilidad()">&#x1F50D; Verificar n&uacute;mero</button>
+          </div>
+        </div>
       </div>
       <div id="seleccionWrap">
         <div class="sel-resumen">
@@ -252,21 +367,85 @@ footer a{color:var(--accent);text-decoration:none}
           <button class="btn btn-primary" id="btnApartar" onclick="apartarBoletos()">&#x1f3ab; Apartar boletos</button>
         </div>
       </div>
-      <div id="successWrap">
-        <div class="ring">
-          <svg width="38" height="38" fill="none" stroke="#2ecc71" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="10 20 17 27 28 13"/></svg>
+      <!-- PASO 2: PAGO -->
+      <div id="pagoWrap">
+        <div class="timer-bar" id="timerBar">
+          <div class="timer-label">Tus n&uacute;meros est&aacute;n reservados por</div>
+          <div class="timer-count" id="timerCount">15:00</div>
         </div>
-        <h3>&iexcl;BOLETOS APARTADOS!</h3>
-        <p>Tus n&uacute;meros han sido reservados. Para confirmar, env&iacute;a tu comprobante de pago por WhatsApp.</p>
-        <div class="nums-res" id="successNums"></div>
-        <div class="codigo-box" id="successCodigo">
-          <div class="lbl">Tu c&oacute;digo de verificaci&oacute;n</div>
-          <div class="code" id="codigoText"></div>
+        <div class="pago-section">
+          <h3>REALIZA TU PAGO</h3>
+          <p class="sub">Transfiere el valor total y env&iacute;a tu comprobante por WhatsApp.</p>
+          <div style="background:var(--surface-2);border:1px solid var(--accent);border-radius:12px;padding:14px 16px;margin-bottom:16px;text-align:center">
+            <div style="font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--muted);margin-bottom:4px">Total a pagar</div>
+            <div style="font-family:'Bebas Neue';font-size:36px;color:var(--accent);line-height:1" id="pagoTotal"></div>
+            <div style="font-size:13px;color:var(--muted);margin-top:4px" id="pagoDetalle"></div>
+          </div>
+          <div class="pago-metodos" id="pagoMetodos">
+            <div class="pago-metodo"><div class="pm-icon" style="background:rgba(150,60,200,.15)">&#x1F4F1;</div><div class="pm-info"><div class="pm-name">Nequi</div><div class="pm-detail" id="pagoNequi"></div></div></div>
+            <div class="pago-metodo"><div class="pm-icon" style="background:rgba(255,80,0,.12)">&#x1F4F2;</div><div class="pm-info"><div class="pm-name">Daviplata</div><div class="pm-detail" id="pagoDaviplata"></div></div></div>
+            <div class="pago-metodo"><div class="pm-icon" style="background:rgba(96,165,250,.12)">&#x1F3E6;</div><div class="pm-info"><div class="pm-name">Transferencia bancaria</div><div class="pm-detail" id="pagoBanco"></div></div></div>
+          </div>
         </div>
-        <a class="btn btn-wa" id="btnWhatsApp" href="#" target="_blank">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.025.504 3.935 1.393 5.608L0 24l6.587-1.317A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-1.86 0-3.633-.496-5.18-1.432l-.372-.22-3.858.771.832-3.698-.248-.39A9.712 9.712 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/></svg>
-          Enviar comprobante
-        </a>
+        <div class="sel-resumen" style="border-color:var(--gold)">
+          <h4 style="color:var(--gold)">Tus n&uacute;meros reservados</h4>
+          <div class="sel-nums" id="pagoNums"></div>
+          <div class="codigo-box" style="margin:10px 0 0">
+            <div class="lbl">C&oacute;digo de verificaci&oacute;n</div>
+            <div class="code" id="pagoCodigo"></div>
+          </div>
+        </div>
+        <div class="btn-group" style="margin-top:16px">
+          <a class="btn btn-wa" id="btnPagoWA" href="#" target="_blank">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.025.504 3.935 1.393 5.608L0 24l6.587-1.317A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-1.86 0-3.633-.496-5.18-1.432l-.372-.22-3.858.771.832-3.698-.248-.39A9.712 9.712 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/></svg>
+            Enviar comprobante de pago
+          </a>
+          <button class="btn btn-primary" onclick="mostrarRecibo()">&#x2705; Ya pagu&eacute; &rarr; Ver mi recibo</button>
+        </div>
+      </div>
+
+      <!-- PASO 3: RECIBO -->
+      <div id="reciboWrap">
+        <div class="recibo-card">
+          <div class="recibo-header">
+            <div class="ring">
+              <svg width="34" height="34" fill="none" stroke="#2ecc71" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="10 18 15 23 25 12"/></svg>
+            </div>
+            <h3>&iexcl;COMPRA REGISTRADA!</h3>
+            <p>Guarda este recibo como comprobante</p>
+          </div>
+          <div class="recibo-row"><span class="rl">Rifa</span><span class="rv" id="recRifa"></span></div>
+          <div class="recibo-row"><span class="rl">Premio</span><span class="rv" id="recPremio"></span></div>
+          <div class="recibo-row"><span class="rl">Loter&iacute;a</span><span class="rv" id="recLoteria" style="color:#60a5fa"></span></div>
+          <div class="recibo-row"><span class="rl">Fecha sorteo</span><span class="rv" id="recFecha"></span></div>
+          <div class="recibo-row"><span class="rl">Comprador</span><span class="rv" id="recNombre"></span></div>
+          <div class="recibo-row"><span class="rl">Tel&eacute;fono</span><span class="rv" id="recTelefono"></span></div>
+          <div class="recibo-row"><span class="rl">Total pagado</span><span class="rv" id="recTotal" style="color:var(--accent);font-size:18px"></span></div>
+          <div style="text-align:center;margin-top:14px">
+            <div style="font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--muted);margin-bottom:6px">Tus n&uacute;meros</div>
+            <div class="recibo-nums" id="recNums"></div>
+          </div>
+          <div class="codigo-box">
+            <div class="lbl">C&oacute;digo de verificaci&oacute;n</div>
+            <div class="code" id="recCodigo"></div>
+          </div>
+        </div>
+
+        <div class="motivacion">
+          <div class="emoji">&#x1F340;&#x1F3C6;&#x1F340;</div>
+          <p>&iexcl;Ya tienes tus n&uacute;meros de la suerte!<br>
+          <span class="bold">Conf&iacute;a, cree y prep&aacute;rate para ganar.</span><br>
+          La suerte ya est&aacute; de tu lado. &#x2728;</p>
+        </div>
+
+        <div class="btn-group">
+          <a class="btn btn-wa" id="btnReciboWA" href="#" target="_blank">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.025.504 3.935 1.393 5.608L0 24l6.587-1.317A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-1.86 0-3.633-.496-5.18-1.432l-.372-.22-3.858.771.832-3.698-.248-.39A9.712 9.712 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/></svg>
+            Recibir recibo por WhatsApp
+          </a>
+          <button class="btn" style="background:var(--surface);border:1px solid var(--line);color:var(--text)" onclick="compartirRecibo()">&#x1F4CB; Copiar recibo</button>
+          <button class="btn" style="background:transparent;border:1px solid var(--line);color:var(--muted)" onclick="showList()">&#x2190; Volver a rifas</button>
+        </div>
       </div>
     </div>
   </section>
@@ -293,6 +472,16 @@ footer a{color:var(--accent);text-decoration:none}
   </section>
 </main>
 
+<div class="sticky-cart" id="stickyCart">
+  <div class="sc-inner">
+    <div class="sc-info">
+      <div class="sc-count" id="scCount">0</div>
+      <div class="sc-text"><span id="scNums"></span><br><span class="sc-total" id="scTotal"></span></div>
+    </div>
+    <button class="sc-btn" onclick="scrollToForm()">Apartar &rarr;</button>
+  </div>
+</div>
+
 <footer>Fundaci&oacute;n Ra&iacute;ces &copy; 2024 &mdash; <a href="https://fundacionraices.co" target="_blank">fundacionraices.co</a></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -302,7 +491,9 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 const WA_NUMERO = '573117896717';
 
-let rifas=[],currentRifa=null,boletos=[],selected=new Set(),vendedores=[];
+let rifas=[],currentRifa=null,boletos=[],selected=new Set(),vendedores=[],boletoCounts={};
+let gridPage=1,hideVendidos=false,searchQuery='';
+const BOLETOS_PER_PAGE=100;
 
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 function fmtMoney(n){return '$'+Number(n).toLocaleString('es-CO')}
@@ -320,11 +511,18 @@ function showSection(name){
 }
 
 async function loadRifas(){
-  const[{data:rd},{data:vd}]=await Promise.all([
+  const[{data:rd},{data:vd},{data:bd}]=await Promise.all([
     sb.from('rifas').select('*').in('estado',['activa','cerrada','sorteada']).order('created_at',{ascending:false}),
-    sb.from('vendedores').select('id,codigo,nombre').eq('activo',true)
+    sb.from('vendedores').select('id,codigo,nombre').eq('activo',true),
+    sb.from('boletos').select('rifa_id,estado')
   ]);
   rifas=rd||[];vendedores=vd||[];
+  boletoCounts={};
+  (bd||[]).forEach(b=>{
+    if(!boletoCounts[b.rifa_id])boletoCounts[b.rifa_id]={v:0,a:0};
+    if(b.estado==='pagado')boletoCounts[b.rifa_id].v++;
+    else if(b.estado==='apartado')boletoCounts[b.rifa_id].a++;
+  });
   if(vendedores.length>0)document.getElementById('vendedorField').style.display='block';
   renderRifas();
 }
@@ -336,42 +534,72 @@ function renderRifas(){
     const ec=r.estado==='activa'?'estado-activa':r.estado==='cerrada'?'estado-cerrada':'estado-sorteada';
     const et=r.estado==='activa'?'Activa':r.estado==='cerrada'?'Cerrada':'Sorteada';
     const img=r.imagen_url?`<img class="rifa-img" src="${esc(r.imagen_url)}" alt="${esc(r.nombre)}" loading="lazy">`:`<div class="rifa-img-placeholder">\u{1F3AB}</div>`;
-    return`<div class="rifa-card" onclick="openRifa('${r.id}')">${img}<div class="rifa-body"><span class="rifa-estado ${ec}">${et}</span><h3>${esc(r.nombre)}</h3><div class="premio">\u{1F3C6} ${esc(r.premio)}</div>${r.descripcion?`<p class="desc">${esc(r.descripcion)}</p>`:''}<div class="rifa-meta"><span class="meta-tag">Boleto: <b>${fmtMoney(r.precio_boleto)}</b></span><span class="meta-tag gold">Números: <b>${r.total_boletos}</b></span>${r.fecha_sorteo?`<span class="meta-tag">Sorteo: <b>${fmtDate(r.fecha_sorteo)}</b></span>`:''}</div></div></div>`
+    const cnt=boletoCounts[r.id]||{v:0,a:0},sold=cnt.v+cnt.a,pct=r.total_boletos?Math.round((sold/r.total_boletos)*100):0;
+    const cif=padLen(r.total_boletos);
+    return`<div class="rifa-card" onclick="openRifa('${r.id}')">${img}<div class="rifa-body"><span class="rifa-estado ${ec}">${et}</span> <span class="cifras-badge">${cif} cifra${cif>1?'s':''}</span><h3>${esc(r.nombre)}</h3><div class="premio">\u{1F3C6} ${esc(r.premio)}</div>${r.loteria?`<div style="color:#60a5fa;font-size:0.85rem;font-weight:600;margin:4px 0">\u{1F3B0} Juega con: ${esc(r.loteria)}</div>`:''}${r.descripcion?`<p class="desc">${esc(r.descripcion)}</p>`:''}<div class="rifa-meta"><span class="meta-tag">Boleto: <b>${fmtMoney(r.precio_boleto)}</b></span><span class="meta-tag gold">Números: <b>${r.total_boletos.toLocaleString('es-CO')}</b></span>${r.fecha_sorteo?`<span class="meta-tag">Sorteo: <b>${fmtDate(r.fecha_sorteo)}</b></span>`:''}</div><div class="progress-wrap"><div class="progress-bar-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="progress-text"><span>${pct}% vendido</span><span>${sold.toLocaleString('es-CO')}/${r.total_boletos.toLocaleString('es-CO')}</span></div></div></div></div>`
   }).join('');
 }
 
 async function openRifa(id){
   currentRifa=rifas.find(r=>r.id===id);if(!currentRifa)return;
-  selected.clear();
+  selected.clear();gridPage=1;hideVendidos=false;searchQuery='';
+  document.getElementById('stickyCart').classList.remove('visible');
   document.getElementById('rifasLista').style.display='none';
   document.getElementById('rifaDetalle').style.display='block';
   document.getElementById('seleccionWrap').style.display='none';
-  document.getElementById('successWrap').style.display='none';
+  document.getElementById('pagoWrap').style.display='none';
+  document.getElementById('reciboWrap').style.display='none';
+  if(reservaTimer)clearInterval(reservaTimer);
   window.scrollTo(0,0);
   document.getElementById('detNombre').textContent=currentRifa.nombre;
   document.getElementById('detPremio').innerHTML='\u{1F3C6} '+esc(currentRifa.premio);
+  document.getElementById('detLoteria').innerHTML=currentRifa.loteria?`<div style="color:#60a5fa;font-weight:700;font-size:1rem;margin:8px 0">\u{1F3B0} Juega con: ${esc(currentRifa.loteria)}</div>`:'';
   document.getElementById('detDesc').textContent=currentRifa.descripcion||'';
   document.getElementById('boletosGrid').innerHTML='<div class="loading-center"><span class="spin"></span></div>';
   const{data}=await sb.from('boletos').select('numero,estado').eq('rifa_id',id);
   boletos=data||[];
   const v=boletos.filter(b=>b.estado==='pagado').length,a=boletos.filter(b=>b.estado==='apartado').length,d=currentRifa.total_boletos-v-a;
+  const cif=padLen(currentRifa.total_boletos);
   document.getElementById('detInfo').innerHTML=`
     <div class="info-item"><div class="val">${fmtMoney(currentRifa.precio_boleto)}</div><div class="lbl">Precio</div></div>
-    <div class="info-item"><div class="val green">${d}</div><div class="lbl">Disponibles</div></div>
-    <div class="info-item"><div class="val">${v}</div><div class="lbl">Vendidos</div></div>
+    <div class="info-item"><div class="val" style="color:var(--blue)">${cif}</div><div class="lbl">Cifras</div></div>
+    <div class="info-item"><div class="val green">${d.toLocaleString('es-CO')}</div><div class="lbl">Disponibles</div></div>
+    <div class="info-item"><div class="val">${v.toLocaleString('es-CO')}</div><div class="lbl">Vendidos</div></div>
     ${currentRifa.fecha_sorteo?`<div class="info-item"><div class="val gold" style="font-size:15px">${fmtDate(currentRifa.fecha_sorteo)}</div><div class="lbl">Sorteo</div></div>`:''}`;
   const desc=currentRifa.descuento_volumen||[];
   document.getElementById('detDescuentos').innerHTML=desc.length?`<div class="descuentos-bar"><h4>\u{1F525} Descuentos por volumen</h4><div class="descuento-items">${desc.map(d=>`<span class="descuento-tag">${d.cantidad}+ boletos → ${d.descuento}% OFF</span>`).join('')}</div></div>`:'';
+  const pct=currentRifa.total_boletos?Math.round(((v+a)/currentRifa.total_boletos)*100):0;
+  document.getElementById('detProgress').innerHTML=`<div class="progress-wrap" style="margin-bottom:14px"><div class="progress-bar-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="progress-text"><span>${pct}% vendido</span><span>${v+a} de ${currentRifa.total_boletos}</span></div></div>`;
+  const searchInput=document.getElementById('searchBoleto');if(searchInput)searchInput.value='';
+  const toggleBtn=document.getElementById('btnToggleVendidos');if(toggleBtn){toggleBtn.textContent='Ocultar vendidos';toggleBtn.classList.remove('active')}
   if(currentRifa.estado==='sorteada'&&currentRifa.numero_ganador!=null){
     document.getElementById('ganadorBanner').innerHTML=`<div class="ganador-banner"><h3>\u{1F3C6} NÚMERO GANADOR</h3><div class="numero">${padNum(currentRifa.numero_ganador,currentRifa.total_boletos)}</div></div>`;
   }else{document.getElementById('ganadorBanner').innerHTML=''}
-  renderGrid();
+  const isPickerMode=currentRifa.total_boletos>1000;
+  document.getElementById('boletosGrid').style.display=isPickerMode?'none':'';
+  document.getElementById('showMoreBtn').style.display='none';
+  document.querySelector('.grid-tools').style.display=isPickerMode?'none':'';
+  document.querySelector('.leyenda').style.display=isPickerMode?'none':'';
+  document.getElementById('pickerMode').style.display=isPickerMode?'block':'none';
+  if(isPickerMode){const pi=document.getElementById('pickerInput');if(pi){pi.value='';pi.placeholder='Ej: '+'0'.repeat(padLen(currentRifa.total_boletos))}document.getElementById('pickerStatus').innerHTML=''}
+  else{renderGrid()}
 }
 
 function renderGrid(){
   const bMap={};boletos.forEach(b=>bMap[b.numero]=b.estado);
-  const grid=document.getElementById('boletosGrid');let html='';
-  for(let i=0;i<currentRifa.total_boletos;i++){
+  const grid=document.getElementById('boletosGrid');
+  let nums=[];
+  for(let i=0;i<currentRifa.total_boletos;i++)nums.push(i);
+  if(searchQuery){
+    nums=nums.filter(n=>padNum(n,currentRifa.total_boletos).includes(searchQuery));
+  }
+  if(hideVendidos){
+    nums=nums.filter(n=>{const e=bMap[n]||'disponible';return e==='disponible'||selected.has(n)});
+  }
+  const totalFiltered=nums.length;
+  const visible=searchQuery?nums:nums.slice(0,gridPage*BOLETOS_PER_PAGE);
+  let html='';
+  for(const i of visible){
     const estado=bMap[i]||'disponible',isSel=selected.has(i);
     let cls='';
     if(estado==='apartado')cls='apartado';else if(estado==='pagado')cls='pagado';else if(isSel)cls='selected';
@@ -380,9 +608,16 @@ function renderGrid(){
     html+=`<div class="boleto ${cls}" ${canClick?`onclick="toggleBoleto(${i})"`:''} title="${estado==='apartado'?'Apartado':estado==='pagado'?'Vendido':''}">${padNum(i,currentRifa.total_boletos)}</div>`;
   }
   grid.innerHTML=html;
+  const moreBtn=document.getElementById('showMoreBtn');
+  if(!searchQuery&&visible.length<totalFiltered){
+    moreBtn.style.display='block';
+    moreBtn.textContent=`Mostrar más (${visible.length} de ${totalFiltered})`;
+  }else{
+    moreBtn.style.display='none';
+  }
 }
 
-function toggleBoleto(n){if(selected.has(n))selected.delete(n);else selected.add(n);renderGrid();updateSeleccion()}
+function toggleBoleto(n){if(selected.has(n))selected.delete(n);else selected.add(n);renderGrid();updateSeleccion();updateStickyCart()}
 
 function calcDescuento(qty){const d=(currentRifa.descuento_volumen||[]).sort((a,b)=>b.cantidad-a.cantidad);for(const x of d){if(qty>=x.cantidad)return x.descuento}return 0}
 
@@ -398,7 +633,11 @@ function updateSeleccion(){
   else html=`<div>Total: <span class="sel-total">${fmtMoney(total)}</span></div>`;
   document.getElementById('selPricing').innerHTML=html;
   wrap.scrollIntoView({behavior:'smooth',block:'nearest'});
+  updateStickyCart();
 }
+
+let reservaTimer=null,reservaData=null;
+const RESERVA_MINUTOS=15;
 
 async function apartarBoletos(){
   const nombre=document.getElementById('fNombre').value.trim(),telefono=document.getElementById('fTelefono').value.trim(),email=document.getElementById('fEmail').value.trim(),vendedorCodigo=document.getElementById('fVendedor').value.trim().toUpperCase(),errEl=document.getElementById('fErr');
@@ -409,25 +648,86 @@ async function apartarBoletos(){
   let vendedor_id=null;
   if(vendedorCodigo){const v=vendedores.find(x=>x.codigo===vendedorCodigo);if(!v){errEl.textContent='Código de vendedor no válido';errEl.style.display='block';return}vendedor_id=v.id}
   const btn=document.getElementById('btnApartar');btn.disabled=true;btn.innerHTML='<span class="spin"></span> Apartando…';
-  const codigo=genCode(),nums=[...selected];
+  const codigo=genCode(),nums=[...selected].sort((a,b)=>a-b);
   const rows=nums.map(n=>({rifa_id:currentRifa.id,numero:n,estado:'apartado',comprador_nombre:nombre,comprador_telefono:telefono,comprador_email:email||null,vendedor_id,codigo_verificacion:codigo,apartado_at:new Date().toISOString()}));
   const{error}=await sb.from('boletos').upsert(rows,{onConflict:'rifa_id,numero'});
   if(error){errEl.textContent='Error al apartar. Algunos números pueden haber sido tomados.';errEl.style.display='block';btn.disabled=false;btn.innerHTML='\u{1F3AB} Apartar boletos';return}
-  const numsStr=nums.sort((a,b)=>a-b).map(n=>padNum(n,currentRifa.total_boletos)).join(', ');
-  const qty=nums.length,dp=calcDescuento(qty),total=fmtMoney(qty*currentRifa.precio_boleto*(1-dp/100));
+
+  const qty=nums.length,dp=calcDescuento(qty),totalNum=qty*currentRifa.precio_boleto*(1-dp/100),totalStr=fmtMoney(totalNum);
+  const numsStr=nums.map(n=>padNum(n,currentRifa.total_boletos)).join(', ');
   const waNum=currentRifa.whatsapp||WA_NUMERO;
-  const msg=`¡Hola! Aparté ${qty} boleto(s) en la rifa *${currentRifa.nombre}*:%0A%0ANúmeros: *${numsStr}*%0ATotal: *${total}*${dp?` (${dp}% desc.)`:''}%0ANombre: ${nombre}%0ATeléfono: ${telefono}%0ACódigo: *${codigo}*%0A%0AAdjunto mi comprobante de pago \u{1F9FE}`;
-  document.getElementById('btnWhatsApp').href=`https://wa.me/${waNum}?text=${msg}`;
-  document.getElementById('successNums').innerHTML=nums.sort((a,b)=>a-b).map(n=>`<span class="sel-num">${padNum(n,currentRifa.total_boletos)}</span>`).join('');
-  document.getElementById('codigoText').textContent=codigo;
+
+  reservaData={nombre,telefono,email,codigo,nums,numsStr,qty,dp,totalNum,totalStr,waNum,rifaNombre:currentRifa.nombre,premio:currentRifa.premio,loteria:currentRifa.loteria||'',fechaSorteo:currentRifa.fecha_sorteo,totalBoletos:currentRifa.total_boletos};
+
+  const msgAdmin=`¡Hola! Aparté ${qty} boleto(s) en la rifa *${currentRifa.nombre}*:%0A%0A🎟️ Números: *${numsStr}*%0A💰 Total: *${totalStr}*${dp?` (${dp}% desc.)`:''}%0A👤 Nombre: ${nombre}%0A📱 Teléfono: ${telefono}%0A🔑 Código: *${codigo}*%0A%0AAdjunto mi comprobante de pago 🧾`;
+  document.getElementById('btnPagoWA').href=`https://wa.me/${waNum}?text=${msgAdmin}`;
+
+  document.getElementById('pagoTotal').textContent=totalStr;
+  document.getElementById('pagoDetalle').textContent=`${qty} boleto(s)${dp?` · ${dp}% descuento`:''}`;
+  document.getElementById('pagoNums').innerHTML=nums.map(n=>`<span class="sel-num">${padNum(n,currentRifa.total_boletos)}</span>`).join('');
+  document.getElementById('pagoCodigo').textContent=codigo;
+
+  const telPago=waNum;
+  document.getElementById('pagoNequi').textContent=telPago;
+  document.getElementById('pagoDaviplata').textContent=telPago;
+  document.getElementById('pagoBanco').textContent='Consultar por WhatsApp';
+
   document.getElementById('seleccionWrap').style.display='none';
-  document.getElementById('successWrap').style.display='block';
-  document.getElementById('successWrap').scrollIntoView({behavior:'smooth'});
+  document.getElementById('pagoWrap').style.display='block';
+  document.getElementById('pagoWrap').scrollIntoView({behavior:'smooth'});
   selected.clear();btn.disabled=false;btn.innerHTML='\u{1F3AB} Apartar boletos';
+  updateStickyCart();
   const{data}=await sb.from('boletos').select('numero,estado').eq('rifa_id',currentRifa.id);boletos=data||[];renderGrid();
+
+  iniciarTimer();
 }
 
-function showList(){document.getElementById('rifaDetalle').style.display='none';document.getElementById('rifasLista').style.display='block';window.scrollTo(0,0)}
+function iniciarTimer(){
+  if(reservaTimer)clearInterval(reservaTimer);
+  let segs=RESERVA_MINUTOS*60;
+  const bar=document.getElementById('timerBar'),countEl=document.getElementById('timerCount');
+  bar.classList.remove('expired');
+  function tick(){
+    if(segs<=0){clearInterval(reservaTimer);countEl.textContent='EXPIRADO';bar.classList.add('expired');return}
+    const m=Math.floor(segs/60),s=segs%60;
+    countEl.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    segs--;
+  }
+  tick();
+  reservaTimer=setInterval(tick,1000);
+}
+
+function mostrarRecibo(){
+  if(!reservaData)return;
+  const d=reservaData;
+  document.getElementById('recRifa').textContent=d.rifaNombre;
+  document.getElementById('recPremio').textContent=d.premio;
+  document.getElementById('recLoteria').textContent=d.loteria||'—';
+  document.getElementById('recFecha').textContent=d.fechaSorteo?fmtDate(d.fechaSorteo):'Por definir';
+  document.getElementById('recNombre').textContent=d.nombre;
+  document.getElementById('recTelefono').textContent=d.telefono;
+  document.getElementById('recTotal').textContent=d.totalStr;
+  document.getElementById('recNums').innerHTML=d.nums.map(n=>`<span class="sel-num">${padNum(n,d.totalBoletos)}</span>`).join('');
+  document.getElementById('recCodigo').textContent=d.codigo;
+
+  const reciboMsg=`🎟️ *RECIBO DE COMPRA — FUNDACIÓN RAÍCES*%0A%0A📋 Rifa: *${d.rifaNombre}*%0A🏆 Premio: *${d.premio}*%0A🎰 Lotería: *${d.loteria||'Por definir'}*%0A📅 Sorteo: *${d.fechaSorteo?fmtDate(d.fechaSorteo):'Por definir'}*%0A%0A🎟️ Números: *${d.numsStr}*%0A💰 Total: *${d.totalStr}*%0A🔑 Código: *${d.codigo}*%0A%0A🍀 *¡La suerte ya está de tu lado!*%0AConfía, cree y prepárate para ganar. ✨%0A%0A_Fundación Raíces — Rifas Solidarias_`;
+  document.getElementById('btnReciboWA').href=`https://wa.me/${d.telefono.startsWith('57')?d.telefono:'57'+d.telefono}?text=${reciboMsg}`;
+
+  if(reservaTimer)clearInterval(reservaTimer);
+  document.getElementById('pagoWrap').style.display='none';
+  document.getElementById('reciboWrap').style.display='block';
+  document.getElementById('reciboWrap').scrollIntoView({behavior:'smooth'});
+}
+
+function compartirRecibo(){
+  if(!reservaData)return;
+  const d=reservaData;
+  const txt=`🎟️ RECIBO — FUNDACIÓN RAÍCES\n\n📋 Rifa: ${d.rifaNombre}\n🏆 Premio: ${d.premio}\n🎰 Lotería: ${d.loteria||'Por definir'}\n📅 Sorteo: ${d.fechaSorteo?fmtDate(d.fechaSorteo):'Por definir'}\n\n🎟️ Números: ${d.numsStr}\n💰 Total: ${d.totalStr}\n🔑 Código: ${d.codigo}\n\n🍀 ¡La suerte ya está de tu lado!\nConfía, cree y prepárate para ganar. ✨`;
+  if(navigator.share){navigator.share({title:'Mi recibo de rifa',text:txt}).catch(()=>{})}
+  else{navigator.clipboard.writeText(txt).then(()=>alert('Recibo copiado al portapapeles')).catch(()=>{})}
+}
+
+function showList(){document.getElementById('rifaDetalle').style.display='none';document.getElementById('rifasLista').style.display='block';document.getElementById('stickyCart').classList.remove('visible');selected.clear();if(reservaTimer)clearInterval(reservaTimer);window.scrollTo(0,0)}
 
 async function verificarTiquete(){
   const q=document.getElementById('vInput').value.trim(),el=document.getElementById('verificadorResult');
@@ -444,6 +744,95 @@ async function loadGanadores(){
   const{data}=await sb.from('ganadores').select('*,rifas(nombre,total_boletos)').eq('publicado',true).order('fecha_sorteo',{ascending:false});
   if(!data||!data.length){el.innerHTML='<p style="color:var(--muted);text-align:center;padding:40px 0">Aún no hay ganadores registrados.</p>';return}
   el.innerHTML='<div class="ganadores-list">'+data.map(g=>`<div class="ganador-card"><div class="ganador-numero">${padNum(g.numero,g.rifas?.total_boletos||100)}</div><div class="ganador-info"><h4>${esc(g.nombre_ganador||'Ganador')}</h4><div class="premio">\u{1F3C6} ${esc(g.premio||'')}</div><div class="fecha">${fmtDate(g.fecha_sorteo)}</div></div></div>`).join('')+'</div>';
+}
+
+function filtrarGrid(){
+  searchQuery=document.getElementById('searchBoleto').value.trim();
+  gridPage=1;
+  renderGrid();
+}
+
+function seleccionarAleatorio(){
+  if(!currentRifa||currentRifa.estado!=='activa')return;
+  const bMap={};boletos.forEach(b=>bMap[b.numero]=b.estado);
+  const disponibles=[];
+  for(let i=0;i<currentRifa.total_boletos;i++){
+    if(!bMap[i]&&!selected.has(i))disponibles.push(i);
+  }
+  if(!disponibles.length){alert('No hay números disponibles');return}
+  const n=disponibles[Math.floor(Math.random()*disponibles.length)];
+  selected.add(n);
+  renderGrid();
+  updateSeleccion();
+  updateStickyCart();
+}
+
+function toggleVendidos(){
+  hideVendidos=!hideVendidos;
+  const btn=document.getElementById('btnToggleVendidos');
+  btn.textContent=hideVendidos?'Mostrar todos':'Ocultar vendidos';
+  btn.classList.toggle('active',hideVendidos);
+  gridPage=1;
+  renderGrid();
+}
+
+function showMoreBoletos(){
+  gridPage++;
+  renderGrid();
+  document.getElementById('boletosGrid').scrollTop=document.getElementById('boletosGrid').scrollHeight;
+}
+
+function scrollToForm(){
+  const wrap=document.getElementById('seleccionWrap');
+  if(wrap&&wrap.style.display!=='none'){
+    wrap.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+}
+
+function agregarNumeroPicker(){
+  if(!currentRifa)return;
+  const input=document.getElementById('pickerInput'),statusEl=document.getElementById('pickerStatus');
+  const numStr=input.value.trim();
+  if(!numStr){statusEl.innerHTML='<span style="color:var(--danger)">Escribe un número</span>';return}
+  const num=parseInt(numStr);
+  if(isNaN(num)||num<0||num>=currentRifa.total_boletos){
+    statusEl.innerHTML=`<span style="color:var(--danger)">Número fuera de rango (0 - ${(currentRifa.total_boletos-1).toLocaleString('es-CO')})</span>`;return}
+  const bMap={};boletos.forEach(b=>bMap[b.numero]=b.estado);
+  const estado=bMap[num]||'disponible';
+  if(estado==='pagado'){statusEl.innerHTML='<span style="color:var(--danger)">Este número ya fue vendido</span>';return}
+  if(estado==='apartado'){statusEl.innerHTML='<span style="color:var(--danger)">Este número está apartado</span>';return}
+  if(selected.has(num)){statusEl.innerHTML='<span style="color:var(--gold)">Ya tienes este número seleccionado</span>';return}
+  selected.add(num);
+  statusEl.innerHTML=`<span style="color:var(--accent)">&#x2713; #${padNum(num,currentRifa.total_boletos)} agregado</span>`;
+  input.value='';
+  updateSeleccion();updateStickyCart();
+}
+
+function buscarDisponibilidad(){
+  if(!currentRifa)return;
+  const input=document.getElementById('pickerInput'),statusEl=document.getElementById('pickerStatus');
+  const numStr=input.value.trim();
+  if(!numStr){statusEl.innerHTML='<span style="color:var(--muted)">Escribe un número para verificar</span>';return}
+  const num=parseInt(numStr);
+  if(isNaN(num)||num<0||num>=currentRifa.total_boletos){
+    statusEl.innerHTML=`<span style="color:var(--danger)">Número fuera de rango</span>`;return}
+  const bMap={};boletos.forEach(b=>bMap[b.numero]=b.estado);
+  const estado=bMap[num]||'disponible';
+  const pad=padNum(num,currentRifa.total_boletos);
+  if(estado==='disponible')statusEl.innerHTML=`<span style="color:var(--accent)">&#x2705; #${pad} está disponible</span>`;
+  else if(estado==='apartado')statusEl.innerHTML=`<span style="color:#f59e0b">&#x23F3; #${pad} está apartado</span>`;
+  else statusEl.innerHTML=`<span style="color:var(--danger)">&#x274C; #${pad} ya fue vendido</span>`;
+}
+
+function updateStickyCart(){
+  const cart=document.getElementById('stickyCart');
+  if(!currentRifa||selected.size===0){cart.classList.remove('visible');return}
+  cart.classList.add('visible');
+  document.getElementById('scCount').textContent=selected.size;
+  const qty=selected.size,dp=calcDescuento(qty),total=qty*currentRifa.precio_boleto*(1-dp/100);
+  document.getElementById('scTotal').textContent=fmtMoney(total)+(dp?` (${dp}% off)`:'');
+  const numsPrev=[...selected].sort((a,b)=>a-b).slice(0,5).map(n=>padNum(n,currentRifa.total_boletos)).join(', ');
+  document.getElementById('scNums').textContent=(selected.size>5?numsPrev+'…':numsPrev);
 }
 
 loadRifas();
