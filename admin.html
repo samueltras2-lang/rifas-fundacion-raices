@@ -279,6 +279,30 @@ tr:hover td { background: rgba(46,204,113,.04); }
       <div class="desc-list" id="descList"></div>
       <button class="btn-sm" onclick="addDescuento()" type="button">+ Agregar descuento</button>
     </div>
+    <div style="background:var(--s2);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:0.85rem">
+      <div style="font-size:0.8rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">
+        💳 Métodos de Pago Activos para Donantes
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:0.82rem;color:var(--text)">
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--line)">
+          <span>🟢 <b>Wompi (Bancolombia):</b></span>
+          <span style="color:var(--green);font-weight:600">✓ Activo (Link & QR)</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--line)">
+          <span>🔵 <b>Bold:</b></span>
+          <span style="color:var(--blue);font-weight:600">✓ Activo (Link directo)</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--line)">
+          <span>🟣 <b>Nequi / Daviplata:</b></span>
+          <span style="color:var(--gold);font-weight:600">310 471 7982</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0">
+          <span>💬 <b>WhatsApp de soporte:</b></span>
+          <span style="color:var(--mu);font-weight:600">311 413 1087</span>
+        </div>
+      </div>
+    </div>
+
     <div class="field"><label class="lbl">Términos y condiciones</label><textarea id="mTerminos" placeholder="Términos opcionales…"></textarea></div>
     <div class="err" id="mErr"></div>
     <button class="btn" id="mBtn" onclick="saveRifa()">Guardar</button>
