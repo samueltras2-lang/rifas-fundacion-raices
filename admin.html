@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — Fundaci&oacute;n Ra&iacute;ces Rifas</title>
 <meta name="robots" content="noindex">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -133,7 +134,15 @@ tr:hover td { background: rgba(46,204,113,.04); }
     <h1>🎟️ Admin Rifas</h1>
     <p>Panel de administración — Fundación Raíces</p>
     <label class="lbl">Contraseña</label>
-    <input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    <div style="position:relative">
+      <input type="password" id="loginPass" placeholder="••••••••" style="padding-right:44px" onkeydown="if(event.key==='Enter')doLogin()">
+      <button type="button" id="togglePassBtn" onclick="toggleLoginPass()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--mu);display:flex;align-items:center;justify-content:center;padding:6px" title="Ver / Ocultar contraseña" aria-label="Ver u ocultar contraseña">
+        <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      </button>
+    </div>
     <div class="err" id="loginErr"></div>
     <button class="btn" onclick="doLogin()">Entrar</button>
   </div>
@@ -309,6 +318,49 @@ tr:hover td { background: rgba(46,204,113,.04); }
   </div>
 </div>
 
+<!-- MODAL REGISTRO MANUAL DE BOLETO -->
+<div class="modal-bg" id="modalManualBoleto">
+  <div class="modal">
+    <h2>🎟️ Venta manual de boleto</h2>
+    <p class="sub" id="mbSub">Registra un boleto vendido en efectivo o por teléfono.</p>
+    <div class="field"><label class="lbl">Número de boleto *</label><input type="number" id="mbNumero" min="0" placeholder="Ej: 42"></div>
+    <div class="field"><label class="lbl">Nombre del comprador *</label><input type="text" id="mbNombre" placeholder="Nombre completo"></div>
+    <div class="field-row">
+      <div class="field"><label class="lbl">Teléfono / WhatsApp *</label><input type="tel" id="mbTel" placeholder="3001234567"></div>
+      <div class="field"><label class="lbl">Estado del pago *</label>
+        <select id="mbEstado">
+          <option value="pagado">Pagado (Confirmado)</option>
+          <option value="apartado">Apartado (Reserva pendiente)</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label class="lbl">Email (opcional)</label><input type="email" id="mbEmail" placeholder="correo@ejemplo.com"></div>
+    <div class="field"><label class="lbl">Vendedor asignado (opcional)</label>
+      <select id="mbVendedor"><option value="">— Ninguno —</option></select>
+    </div>
+    <div class="err" id="mbErr"></div>
+    <button class="btn" id="mbBtn" onclick="saveBoletoManual()">Guardar boleto</button>
+    <button class="btn" style="background:transparent;border:1px solid var(--line);color:var(--mu);margin-top:0.5rem" onclick="closeManualBoletoModal()">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL QR Y LINK DE VENTA / BOLETO -->
+<div class="modal-bg" id="modalRifaQR">
+  <div class="modal" style="text-align:center">
+    <h2 id="mqrTitle">📱 Código QR y Link</h2>
+    <p class="sub" id="mqrSub">Comparte este código o enlace con tus compradores.</p>
+    <div style="background:#fff;padding:16px;border-radius:14px;display:inline-block;margin:10px auto;box-shadow:0 4px 16px rgba(0,0,0,.4)">
+      <div id="mqrContainer"></div>
+    </div>
+    <div style="font-size:0.8rem;color:var(--mu);margin-bottom:1rem;word-break:break-all" id="mqrUrl"></div>
+    <div style="display:flex;flex-direction:column;gap:0.5rem">
+      <button class="btn" style="margin-top:0;background:var(--accent)" onclick="copiarQRUrl(this)">📋 Copiar link</button>
+      <a id="btnQRWhatsApp" href="#" target="_blank" class="btn" style="margin-top:0;background:#25D366;text-decoration:none;color:#06210f;font-weight:700">💬 Enviar por WhatsApp</a>
+      <button class="btn" style="margin-top:0;background:transparent;border:1px solid var(--line);color:var(--mu)" onclick="closeRifaQR()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 const SUPABASE_URL = 'https://vgnjaafsvzqwsydujggt.supabase.co';
@@ -329,6 +381,27 @@ function cifrasFromTotal(t){if(!t||t<=0)return 2;const c=Math.round(Math.log10(t
 function updateCifras(){const c=parseInt(document.getElementById('mCifras').value),t=Math.pow(10,c),f='0'.repeat(c),to=String(t-1).padStart(c,'0');document.getElementById('cifrasPreview').innerHTML=`<b style="color:var(--accent)">${t.toLocaleString('es-CO')}</b> números · Del <b>${f}</b> al <b>${to}</b>`}
 
 // AUTH
+function toggleLoginPass(){
+  const inp = document.getElementById('loginPass');
+  const btn = document.getElementById('togglePassBtn');
+  if(!inp || !btn) return;
+  if(inp.type === 'password'){
+    inp.type = 'text';
+    btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+      <line x1="1" y1="1" x2="23" y2="23"></line>
+    </svg>`;
+    btn.style.color = 'var(--accent)';
+  } else {
+    inp.type = 'password';
+    btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+      <circle cx="12" cy="12" r="3"></circle>
+    </svg>`;
+    btn.style.color = 'var(--mu)';
+  }
+}
+
 function doLogin(){
   const pass = document.getElementById('loginPass').value;
   if(pass !== ADMIN_PASS){ const e=document.getElementById('loginErr'); e.textContent='Contraseña incorrecta'; e.style.display='block'; return; }
@@ -397,9 +470,14 @@ function renderCards(){
       ${r.fecha_sorteo ? `<div style="font-size:0.78rem;color:var(--mu)">Sorteo: ${fmtDate(r.fecha_sorteo)}</div>` : ''}
       ${r.numero_ganador!=null ? `<div style="margin-top:0.4rem;color:var(--gold);font-weight:700">🏆 Ganador: #${padNum(r.numero_ganador,r.total_boletos)}</div>` : ''}
       <div class="card-actions">
-        <button class="btn-sm" onclick="switchTab('boletos-detail',document.querySelectorAll('.tab-btn')[1]);document.getElementById('rifaSelectBoletos').value='${r.id}';verBoletos('${r.id}')">Boletos</button>
+        <button class="btn-sm" onclick="switchTab('boletos-detail',document.querySelectorAll('.tab-btn')[1]);document.getElementById('rifaSelectBoletos').value='${r.id}';verBoletos('${r.id}')">Boletos (${r._pagados})</button>
+        <button class="btn-sm" style="color:var(--accent);border-color:rgba(46,204,113,.4)" onclick="openRifaQR('${r.id}')">📱 QR & Link</button>
         <button class="btn-sm" onclick="openModal('editar','${r.id}')">Editar</button>
+        ${r.estado==='borrador' ? `<button class="btn-sm green" onclick="quickEstado('${r.id}','activa')">▶ Activar</button>` : ''}
+        ${r.estado==='activa' ? `<button class="btn-sm" style="color:var(--warn);border-color:var(--warn)" onclick="quickEstado('${r.id}','cerrada')">⏸ Cerrar</button>` : ''}
+        ${r.estado==='cerrada' ? `<button class="btn-sm green" onclick="quickEstado('${r.id}','activa')">▶ Reabrir</button>` : ''}
         ${r.estado!=='sorteada' ? `<button class="btn-sm gold" onclick="openSorteo('${r.id}')">🎲 Sortear</button>` : ''}
+        <a href="/?rifa=${r.id}" target="_blank" class="btn-sm" style="color:var(--blue);border-color:var(--blue);text-decoration:none">🔗 Ver en web</a>
         <button class="btn-sm danger" onclick="deleteRifa('${r.id}')">Eliminar</button>
       </div>
     </div>`;
@@ -530,22 +608,28 @@ async function loadBoletos(){
   const { data } = await sb.from('boletos').select('*,vendedores(nombre,codigo)').eq('rifa_id',currentRifaId).order('numero',{ascending:true});
   currentBoletos = data || [];
 
+  const now = new Date().getTime();
   const pagados = currentBoletos.filter(b=>b.estado==='pagado').length;
-  const apartados = currentBoletos.filter(b=>b.estado==='apartado').length;
-  const disponibles = rifa.total_boletos - pagados - apartados;
+  const apartadosTotal = currentBoletos.filter(b=>b.estado==='apartado');
+  const apartadosVigentes = apartadosTotal.filter(b=>(now - new Date(b.apartado_at||b.created_at).getTime()) <= 15*60*1000).length;
+  const apartadosVencidos = apartadosTotal.filter(b=>(now - new Date(b.apartado_at||b.created_at).getTime()) > 15*60*1000).length;
+  const disponibles = rifa.total_boletos - pagados - apartadosTotal.length;
   const ingresos = pagados * rifa.precio_boleto;
 
   document.getElementById('boletosStats').innerHTML = `
     <div class="stat"><div class="num green">${disponibles}</div><div class="lbl">Disponibles</div></div>
-    <div class="stat"><div class="num warn">${apartados}</div><div class="lbl">Apartados</div></div>
+    <div class="stat"><div class="num warn">${apartadosTotal.length}</div><div class="lbl">Apartados (${apartadosVigentes} vigentes / ${apartadosVencidos} vencidos)</div></div>
     <div class="stat"><div class="num gold">${pagados}</div><div class="lbl">Pagados</div></div>
     <div class="stat"><div class="num">${fmtMoney(ingresos)}</div><div class="lbl">Recaudado</div></div>
   `;
   document.getElementById('boletosFilters').innerHTML = `
-    <button class="filter-btn ${boletosFilter==='todos'?'active':''}" onclick="setFilter('todos')">Todos</button>
-    <button class="filter-btn ${boletosFilter==='apartado'?'active':''}" onclick="setFilter('apartado')">Apartados (${apartados})</button>
+    <button class="btn-sm green" onclick="openManualBoletoModal()" style="font-weight:700">+ Vender boleto manual</button>
+    <button class="filter-btn ${boletosFilter==='todos'?'active':''}" onclick="setFilter('todos')">Todos (${currentBoletos.length})</button>
+    <button class="filter-btn ${boletosFilter==='vigentes'?'active':''}" onclick="setFilter('vigentes')">Apartados vigentes (${apartadosVigentes})</button>
+    <button class="filter-btn ${boletosFilter==='vencidos'?'active':''}" onclick="setFilter('vencidos')">Apartados vencidos (${apartadosVencidos})</button>
     <button class="filter-btn ${boletosFilter==='pagado'?'active':''}" onclick="setFilter('pagado')">Pagados (${pagados})</button>
     <input class="search-input" type="text" placeholder="Buscar…" oninput="searchBoletos(this.value)">
+    ${apartadosVencidos>0?`<button class="btn-sm danger" onclick="liberarApartadosVencidos()" title="Liberar todos los apartados con más de 15 minutos">🧹 Liberar vencidos (${apartadosVencidos})</button>`:''}
     <button class="btn-sm" onclick="exportCSV()">↓ CSV</button>
   `;
   renderBoletos();
@@ -555,8 +639,13 @@ function setFilter(f){ boletosFilter=f; searchTerm=''; renderBoletos(); }
 function searchBoletos(v){ searchTerm=v.toLowerCase(); renderBoletos(); }
 
 function renderBoletos(){
+  const now = new Date().getTime();
   let filtered = currentBoletos;
-  if(boletosFilter!=='todos') filtered=filtered.filter(b=>b.estado===boletosFilter);
+  if(boletosFilter==='pagado') filtered=filtered.filter(b=>b.estado==='pagado');
+  else if(boletosFilter==='apartado') filtered=filtered.filter(b=>b.estado==='apartado');
+  else if(boletosFilter==='vigentes') filtered=filtered.filter(b=>b.estado==='apartado' && (now - new Date(b.apartado_at||b.created_at).getTime()) <= 15*60*1000);
+  else if(boletosFilter==='vencidos') filtered=filtered.filter(b=>b.estado==='apartado' && (now - new Date(b.apartado_at||b.created_at).getTime()) > 15*60*1000);
+
   if(searchTerm) filtered=filtered.filter(b=>(b.comprador_nombre||'').toLowerCase().includes(searchTerm)||(b.comprador_telefono||'').includes(searchTerm)||(b.codigo_verificacion||'').toLowerCase().includes(searchTerm));
 
   if(!filtered.length){ document.getElementById('boletosTable').innerHTML='<div class="empty">Sin boletos.</div>'; return; }
@@ -564,21 +653,30 @@ function renderBoletos(){
 
   document.getElementById('boletosTable').innerHTML = `
   <div class="table-wrap"><table>
-    <thead><tr><th>#</th><th>Estado</th><th>Nombre</th><th>Teléfono</th><th>Código</th><th>Vendedor</th><th>Fecha</th><th>Acciones</th></tr></thead>
+    <thead><tr><th>#</th><th>Estado</th><th>Nombre</th><th>Teléfono</th><th>Código</th><th>Vendedor</th><th>Fecha / Tiempo</th><th>Acciones</th></tr></thead>
     <tbody>
-      ${filtered.map(b => `<tr>
+      ${filtered.map(b => {
+        const diffMin = Math.floor((now - new Date(b.apartado_at||b.created_at).getTime()) / 60000);
+        const esVencido = b.estado==='apartado' && diffMin > 15;
+        const tiempoTxt = b.estado==='apartado' 
+          ? (esVencido ? `<span style="color:var(--danger)">Vencido hace ${diffMin-15}m</span>` : `<span style="color:var(--warn)">Vigente (${15-diffMin}m rest.)</span>`)
+          : fmtDate(b.pagado_at||b.created_at);
+        return `<tr>
         <td><b>${padNum(b.numero,rifa.total_boletos)}</b></td>
-        <td><span class="status-dot sd-${b.estado}"></span>${b.estado==='apartado'?'Apartado':b.estado==='pagado'?'Pagado':'Disp.'}</td>
+        <td><span class="status-dot sd-${b.estado}"></span>${b.estado==='apartado'?(esVencido?'Apartado (Vencido)':'Apartado'):'Pagado'}</td>
         <td>${esc(b.comprador_nombre)}</td>
         <td>${esc(b.comprador_telefono)}</td>
         <td style="color:var(--gold);font-weight:600">${esc(b.codigo_verificacion||'—')}</td>
         <td>${b.vendedores?esc(b.vendedores.nombre)+' <span style="color:var(--mu)">('+esc(b.vendedores.codigo)+')</span>':'—'}</td>
-        <td style="font-size:0.78rem">${fmtDate(b.apartado_at||b.created_at)}</td>
-        <td style="white-space:nowrap">
+        <td style="font-size:0.78rem">${tiempoTxt}</td>
+        <td style="white-space:nowrap;display:flex;gap:4px">
+          ${b.codigo_verificacion?`<button class="btn-sm" style="color:var(--gold);border-color:rgba(245,197,24,.4)" onclick="openBoletoQR('${esc(b.codigo_verificacion)}','${padNum(b.numero,rifa.total_boletos)}','${esc(rifa.nombre)}')">📱 QR</button>`:''}
+          ${b.comprador_telefono?`<button class="btn-sm" style="color:#25D366;border-color:rgba(37,211,102,.4)" onclick="waBoleto('${esc(b.comprador_telefono)}','${esc(b.comprador_nombre)}','${padNum(b.numero,rifa.total_boletos)}','${esc(rifa.nombre)}','${b.estado}','${esc(b.codigo_verificacion)}')">💬 WA</button>`:''}
           ${b.estado==='apartado'?`<button class="btn-sm green" onclick="confirmarPago('${b.id}')">✓ Pago</button>`:''}
           ${b.estado!=='disponible'?`<button class="btn-sm danger" onclick="liberarBoleto('${b.id}')">Liberar</button>`:''}
         </td>
-      </tr>`).join('')}
+      </tr>`;
+      }).join('')}
     </tbody>
   </table></div>`;
 }
@@ -589,6 +687,15 @@ async function confirmarPago(id){
 async function liberarBoleto(id){
   if(!confirm('¿Liberar este boleto?')) return;
   await sb.from('boletos').delete().eq('id',id); loadBoletos();
+}
+async function liberarApartadosVencidos(){
+  const now = new Date().getTime();
+  const vencidos = currentBoletos.filter(b=>b.estado==='apartado' && (now - new Date(b.apartado_at||b.created_at).getTime()) > 15*60*1000);
+  if(!vencidos.length){ alert('No hay boletos vencidos por liberar.'); return; }
+  if(!confirm(`¿Deseas liberar ${vencidos.length} boleto(s) vencidos para ponerlos nuevamente a disposición del público?`)) return;
+  const ids = vencidos.map(b=>b.id);
+  await sb.from('boletos').delete().in('id',ids);
+  loadBoletos();
 }
 
 // REGISTRAR GANADOR (número de lotería)
@@ -636,6 +743,7 @@ async function registrarGanador(){
     <p style="color:var(--green);font-weight:700;margin-top:0.5rem">${esc(nombre_ganador)}</p>
     ${telefono_ganador?`<p style="color:var(--mu);font-size:0.85rem">${esc(telefono_ganador)}</p>`:''}
     ${!boleto||!boleto.comprador_nombre?`<p style="color:var(--warn);font-size:0.85rem;margin-top:0.5rem">Este boleto no fue vendido</p>`:''}
+    ${boleto&&boleto.estado==='apartado'?`<p style="color:var(--danger);font-weight:700;margin-top:0.5rem">⚠️ ATENCIÓN: Este boleto figura como APARTADO (NO PAGADO)</p>`:''}
   `;
 
   await Promise.all([
@@ -644,6 +752,96 @@ async function registrarGanador(){
   ]);
   btn.textContent='✓ Registrado';
   loadAll();
+}
+
+async function quickEstado(id, nuevoEstado){
+  const txt = nuevoEstado === 'activa' ? 'activar' : nuevoEstado === 'cerrada' ? 'cerrar' : nuevoEstado;
+  if(!confirm(`¿Deseas ${txt} esta rifa?`)) return;
+  await sb.from('rifas').update({estado:nuevoEstado, updated_at:new Date().toISOString()}).eq('id',id);
+  loadAll();
+}
+
+function waBoleto(tel, nombre, num, rifaNombre, estado, codigo){
+  const clean = (tel||'').replace(/\D/g,'');
+  if(!clean) { alert('Este boleto no tiene un teléfono registrado'); return; }
+  const fullTel = clean.startsWith('57') ? clean : '57' + clean;
+  let msg = '';
+  if(estado === 'pagado'){
+    msg = `Hola ${nombre}, te saludamos de Fundación Raíces. Te confirmamos que tu tiquete #${num} en la rifa "${rifaNombre}" se encuentra oficialmente PAGADO y participando (Código: ${codigo}). ¡Muchos éxitos en el sorteo! 🍀`;
+  } else {
+    msg = `Hola ${nombre}, te saludamos de Fundación Raíces. Tienes reservado el número #${num} en la rifa "${rifaNombre}" (Código: ${codigo}). ¿Ya realizaste tu transferencia o necesitas asistencia para confirmar tu tiquete? 🎟️`;
+  }
+  window.open(`https://wa.me/${fullTel}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function openManualBoletoModal(){
+  if(!currentRifaId){ alert('Selecciona una rifa primero'); return; }
+  const rifa = allRifas.find(r=>r.id===currentRifaId); if(!rifa) return;
+  document.getElementById('modalManualBoleto').classList.add('on');
+  document.getElementById('mbErr').style.display='none';
+  document.getElementById('mbSub').textContent=`Rifa: ${rifa.nombre} (0 a ${rifa.total_boletos-1})`;
+  document.getElementById('mbNumero').value='';
+  document.getElementById('mbNumero').max=rifa.total_boletos-1;
+  document.getElementById('mbNombre').value='';
+  document.getElementById('mbTel').value='';
+  document.getElementById('mbEmail').value='';
+  document.getElementById('mbEstado').value='pagado';
+
+  const vSel = document.getElementById('mbVendedor');
+  vSel.innerHTML='<option value="">— Ninguno —</option>'+allVendedores.filter(v=>v.activo).map(v=>`<option value="${v.id}">${esc(v.nombre)} (${esc(v.codigo)})</option>`).join('');
+}
+function closeManualBoletoModal(){
+  document.getElementById('modalManualBoleto').classList.remove('on');
+}
+
+async function saveBoletoManual(){
+  const rifa = allRifas.find(r=>r.id===currentRifaId); if(!rifa) return;
+  const num = parseInt(document.getElementById('mbNumero').value);
+  const nombre = document.getElementById('mbNombre').value.trim();
+  const tel = document.getElementById('mbTel').value.trim();
+  const email = document.getElementById('mbEmail').value.trim();
+  const estado = document.getElementById('mbEstado').value;
+  const vId = document.getElementById('mbVendedor').value || null;
+  const errEl = document.getElementById('mbErr');
+  errEl.style.display='none';
+
+  if(isNaN(num) || num < 0 || num >= rifa.total_boletos){
+    errEl.textContent=`Número inválido (debe estar entre 0 y ${rifa.total_boletos-1})`;
+    errEl.style.display='block'; return;
+  }
+  if(!nombre){ errEl.textContent='Ingresa el nombre del comprador'; errEl.style.display='block'; return; }
+  if(!tel || tel.length < 7){ errEl.textContent='Ingresa un teléfono válido'; errEl.style.display='block'; return; }
+
+  const { data: existe } = await sb.from('boletos').select('id,estado,comprador_nombre').eq('rifa_id',currentRifaId).eq('numero',num).maybeSingle();
+  if(existe && existe.estado==='pagado'){
+    errEl.textContent=`El número #${padNum(num,rifa.total_boletos)} ya está PAGADO por ${existe.comprador_nombre}`;
+    errEl.style.display='block'; return;
+  }
+
+  const btn = document.getElementById('mbBtn');
+  btn.disabled=true; btn.textContent='Guardando…';
+
+  const codigo = genCode();
+  const row = {
+    rifa_id: currentRifaId,
+    numero: num,
+    estado,
+    comprador_nombre: nombre,
+    comprador_telefono: tel,
+    comprador_email: email || null,
+    vendedor_id: vId,
+    codigo_verificacion: codigo,
+    apartado_at: new Date().toISOString(),
+    pagado_at: estado==='pagado' ? new Date().toISOString() : null
+  };
+
+  const { error } = await sb.from('boletos').upsert(row, {onConflict:'rifa_id,numero'});
+  btn.disabled=false; btn.textContent='Guardar boleto';
+  if(error){
+    errEl.textContent='Error: '+error.message; errEl.style.display='block'; return;
+  }
+  closeManualBoletoModal();
+  loadBoletos();
 }
 
 // VENDEDORES
@@ -815,8 +1013,82 @@ function exportCSV(){
     b.apartado_at?new Date(b.apartado_at).toLocaleString('es-CO'):'',
     b.pagado_at?new Date(b.pagado_at).toLocaleString('es-CO'):''
   ])].map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'});
+  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`boletos-${rifa.nombre.replace(/\s+/g,'-')}-${new Date().toISOString().slice(0,10)}.csv`; a.click(); URL.revokeObjectURL(a.href);
+}
+
+// QR MODAL LOGIC
+let currentQRUrl = '';
+function renderAdminQR(containerId, text, size){
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  el.innerHTML = '';
+  size = size || 160;
+  if(typeof QRCode !== 'undefined'){
+    try {
+      new QRCode(el, {
+        text: text,
+        width: size,
+        height: size,
+        colorDark: '#0d0d0d',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+      return;
+    } catch(err){
+      console.warn('QR error, using fallback:', err);
+    }
+  }
+  const img = document.createElement('img');
+  img.src = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}`;
+  img.width = size;
+  img.height = size;
+  img.alt = 'Código QR';
+  img.style.display = 'block';
+  img.style.margin = '0 auto';
+  el.appendChild(img);
+}
+
+function openRifaQR(id){
+  const rifa = allRifas.find(r=>r.id===id); if(!rifa) return;
+  const baseUrl = window.location.origin;
+  const url = `${baseUrl}/?rifa=${encodeURIComponent(rifa.id)}`;
+  currentQRUrl = url;
+  document.getElementById('mqrTitle').textContent = `📱 QR de Rifa: ${rifa.nombre}`;
+  document.getElementById('mqrSub').textContent = `Enlace directo de venta para compartir o imprimir en afiches y estados:`;
+  document.getElementById('mqrUrl').textContent = url;
+  const msg = `🎟️ ¡Participa en la rifa "${rifa.nombre}" de Fundación Raíces por el premio ${rifa.premio}! Elige tu número aquí: ${url}`;
+  document.getElementById('btnQRWhatsApp').href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+  renderAdminQR('mqrContainer', url, 180);
+  document.getElementById('modalRifaQR').classList.add('on');
+}
+
+function openBoletoQR(codigo, num, rifaNombre){
+  const baseUrl = window.location.origin;
+  const url = `${baseUrl}/?ticket=${encodeURIComponent(codigo)}`;
+  currentQRUrl = url;
+  document.getElementById('mqrTitle').textContent = `🎟️ QR Boleto #${num}`;
+  document.getElementById('mqrSub').textContent = `Rifa: ${rifaNombre} · Código único: ${codigo}`;
+  document.getElementById('mqrUrl').textContent = url;
+  const msg = `🎟️ Consulta tu comprobante oficial del boleto #${num} (Código: ${codigo}) de la rifa "${rifaNombre}": ${url}`;
+  document.getElementById('btnQRWhatsApp').href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+  renderAdminQR('mqrContainer', url, 180);
+  document.getElementById('modalRifaQR').classList.add('on');
+}
+
+function closeRifaQR(){
+  document.getElementById('modalRifaQR').classList.remove('on');
+}
+
+function copiarQRUrl(btnEl){
+  if(!currentQRUrl) return;
+  navigator.clipboard.writeText(currentQRUrl).then(()=>{
+    const prev = btnEl.textContent;
+    btnEl.textContent = '¡Copiado!';
+    setTimeout(()=>{ btnEl.textContent = prev; }, 1600);
+  }).catch(()=>{
+    alert('URL: ' + currentQRUrl);
+  });
 }
 </script>
 </body>
