@@ -584,108 +584,104 @@ footer a:hover{text-decoration:underline}
           <div style="font-size:12px;color:var(--muted);margin-top:4px">Al vencer, los n&uacute;meros se liberar&aacute;n autom&aacute;ticamente para otros participantes.</div>
         </div>
 
-        <div class="pago-section">
-          <h3>INSTRUCCIONES DE PAGO</h3>
-          <p class="sub">Sigue estos 3 pasos para completar y validar tu compra:</p>
+        <div class="pago-section" style="border:1px solid rgba(46,204,113,.35)">
+          <div style="font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:2px;font-size:12px;color:var(--accent);font-weight:700;margin-bottom:4px">PASO 1 &middot; PAGO RÁPIDO Y SEGURO</div>
+          <h3 style="font-size:28px">PAGA EN L&Iacute;NEA</h3>
+          <p class="sub" style="margin-bottom:14px">Paga de forma inmediata con <b>Wompi</b> o <b>Bold</b> usando Tarjeta, PSE, Bancolombia, Nequi o Daviplata.</p>
           
-          <div class="pago-steps">
-            <div class="pago-step">
-              <div class="pago-step-num">1</div>
-              <div>Transfiere el <b>valor exacto</b> a cualquiera de las cuentas oficiales de la fundaci&oacute;n indicadas abajo.</div>
-            </div>
-            <div class="pago-step">
-              <div class="pago-step-num">2</div>
-              <div>Env&iacute;a tu <b>comprobante por WhatsApp</b> haciendo clic en el bot&oacute;n verde.</div>
-            </div>
-            <div class="pago-step">
-              <div class="pago-step-num">3</div>
-              <div>Nuestro equipo validar&aacute; la transacci&oacute;n y tu tiquete pasar&aacute; al estado <b>PAGADO (Confirmado)</b>.</div>
-            </div>
-          </div>
-
-          <div style="background:var(--surface-2);border:1px solid var(--accent);border-radius:12px;padding:14px 16px;margin-bottom:16px;text-align:center">
-            <div style="font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--muted);margin-bottom:4px">Total a transferir</div>
-            <div style="font-family:'Bebas Neue';font-size:38px;color:var(--accent);line-height:1" id="pagoTotal"></div>
+          <div style="background:var(--surface-2);border:1px solid var(--accent);border-radius:14px;padding:14px 16px;margin-bottom:18px;text-align:center">
+            <div style="font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--muted);margin-bottom:4px">Total a pagar</div>
+            <div style="font-family:'Bebas Neue';font-size:40px;color:var(--accent);line-height:1" id="pagoTotal"></div>
             <div style="font-size:13px;color:var(--muted);margin-top:4px" id="pagoDetalle"></div>
           </div>
 
-          <div class="pago-metodos" id="pagoMetodos">
-            <!-- 1. WOMPI (BANCOLOMBIA) EN LÍNEA -->
-            <div class="pago-metodo" style="border:1px solid rgba(46,204,113,.4);background:rgba(46,204,113,.06);flex-direction:column;align-items:stretch;gap:12px">
-              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
-                <div style="display:flex;align-items:center;gap:12px">
-                  <div class="pm-icon" style="background:rgba(46,204,113,.15);font-size:20px">&#x1F4B3;</div>
-                  <div class="pm-info">
-                    <div class="pm-name" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-                      <span>Wompi (Bancolombia)</span>
-                      <span style="background:var(--accent);color:#06210f;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px">PSE &middot; Tarjetas &middot; Nequi</span>
-                    </div>
-                    <div class="pm-detail">Paga en l&iacute;nea al instante o escanea el QR desde tu celular</div>
-                  </div>
-                </div>
-                <div class="pm-action">
-                  <a id="btnPagarWompi" href="https://checkout.wompi.co/l/VPOS_p6LajA" target="_blank" rel="noopener" class="btn-copy" style="background:var(--accent);color:#06210f;font-weight:700;border:none;padding:9px 14px;text-decoration:none;display:inline-flex;align-items:center;gap:4px">
-                    Pagar con Wompi &rarr;
-                  </a>
-                </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <!-- PASARELA 1: WOMPI (BANCOLOMBIA) -->
+            <div style="background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.45);border-radius:14px;padding:16px;text-align:center">
+              <div style="font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:1px;font-size:12px;color:var(--accent);font-weight:700;margin-bottom:8px">Opción 1: Pasarela Wompi</div>
+              <a id="btnPagarWompi" href="https://checkout.wompi.co/l/VPOS_p6LajA" target="_blank" rel="noopener" 
+                 style="display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:340px;padding:14px 20px;background:linear-gradient(135deg,#2ecc71,#27ae60);color:#06210f;font-weight:800;font-size:16px;border-radius:50px;text-decoration:none;box-shadow:0 6px 20px rgba(46,204,113,.35);transition:all .15s">
+                <span>💳 Pagar con Wompi &rarr;</span>
+              </a>
+              <div style="margin-top:10px;display:flex;justify-content:center;gap:6px;font-size:10px;color:var(--muted);text-transform:uppercase;font-family:'Barlow Condensed';letter-spacing:1px;flex-wrap:wrap">
+                <span style="background:rgba(255,255,255,.06);padding:3px 8px;border-radius:4px">Bancolombia</span>
+                <span style="background:rgba(255,255,255,.06);padding:3px 8px;border-radius:4px">PSE</span>
+                <span style="background:rgba(255,255,255,.06);padding:3px 8px;border-radius:4px">Tarjetas</span>
+                <span style="background:rgba(255,255,255,.06);padding:3px 8px;border-radius:4px">Nequi</span>
               </div>
+              <div style="font-size:11px;color:var(--muted);margin-top:6px">Pago procesado de forma segura por Wompi (Bancolombia)</div>
 
-              <!-- CODIGO QR DE WOMPI -->
-              <div style="background:#fff;border-radius:12px;padding:12px;text-align:center;max-width:210px;margin:4px auto 0;box-shadow:0 4px 14px rgba(0,0,0,.3)">
+              <!-- CODIGO QR WOMPI -->
+              <div style="margin-top:12px;background:#fff;border-radius:12px;padding:10px;display:inline-block;box-shadow:0 4px 12px rgba(0,0,0,.3)">
                 <div id="wompiQrBox" style="display:flex;justify-content:center"></div>
-                <div style="color:#06210f;font-size:11px;font-weight:700;margin-top:6px;font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:1px">
-                  Escanear para pagar con Wompi
-                </div>
+                <div style="color:#06210f;font-size:10px;font-weight:700;margin-top:4px;font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:1px">Escanear para pagar con Wompi</div>
               </div>
             </div>
 
-            <!-- 2. BOLD (PAGO EN LÍNEA) -->
-            <div class="pago-metodo" id="pmBoldWrap" style="border:1px solid rgba(96,165,250,.4);background:rgba(96,165,250,.06)">
-              <div class="pm-icon" style="background:rgba(96,165,250,.15);font-size:20px">&#x26A1;</div>
-              <div class="pm-info">
-                <div class="pm-name" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-                  <span>Bold</span>
-                  <span style="background:var(--blue);color:#06210f;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px">PSE &middot; Tarjetas &middot; Botón Bold</span>
-                </div>
-                <div class="pm-detail">Paga en l&iacute;nea al instante de forma segura mediante Bold</div>
+            <!-- PASARELA 2: BOLD -->
+            <div style="background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.45);border-radius:14px;padding:16px;text-align:center">
+              <div style="font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:1px;font-size:12px;color:var(--blue);font-weight:700;margin-bottom:8px">Opción 2: Pasarela Bold</div>
+              <a id="btnPagarBold" href="https://checkout.bold.co/payment/LNK_DLCK1TGBNK" target="_blank" rel="noopener"
+                 style="display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:340px;padding:14px 20px;background:linear-gradient(135deg,#ff3366,#1f1c2c);color:#fff;font-weight:800;font-size:16px;border-radius:50px;text-decoration:none;box-shadow:0 6px 20px rgba(255,51,102,.3);transition:all .15s">
+                <span>⚡ Pagar con Bold &rarr;</span>
+              </a>
+              <div style="margin-top:10px;display:flex;justify-content:center;gap:6px;font-size:10px;color:var(--muted);text-transform:uppercase;font-family:'Barlow Condensed';letter-spacing:1px;flex-wrap:wrap">
+                <span style="background:rgba(255,255,255,.06);padding:3px 8px;border-radius:4px">Visa / Mastercard</span>
+                <span style="background:rgba(255,255,255,.06);padding:3px 8px;border-radius:4px">PSE</span>
+                <span style="background:rgba(255,255,255,.06);padding:3px 8px;border-radius:4px">Nequi</span>
+                <span style="background:rgba(255,255,255,.06);padding:3px 8px;border-radius:4px">Daviplata</span>
               </div>
-              <div class="pm-action">
-                <a id="btnPagarBold" href="https://checkout.bold.co/payment/LNK_DLCK1TGBNK" target="_blank" rel="noopener" class="btn-copy" style="background:var(--blue);color:#06210f;font-weight:700;border:none;padding:9px 14px;text-decoration:none;display:inline-flex;align-items:center;gap:4px">
-                  Pagar con Bold &rarr;
-                </a>
-              </div>
+              <div style="font-size:11px;color:var(--muted);margin-top:6px">Pago procesado de forma segura por Bold</div>
             </div>
+          </div>
+        </div>
 
-            <!-- 3. NEQUI MANUAL -->
+        <!-- SEPARADOR -->
+        <div style="display:flex;align-items:center;gap:12px;margin:20px 0">
+          <div style="flex:1;height:1px;background:var(--line)"></div>
+          <span style="font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--muted);font-weight:700">O PAGA POR TRANSFERENCIA MANUAL</span>
+          <div style="flex:1;height:1px;background:var(--line)"></div>
+        </div>
+
+        <!-- SECCION TRANSFERENCIAS MANUALES -->
+        <div class="pago-section">
+          <h3>TAMBI&Eacute;N PUEDES TRANSFERIR</h3>
+          <p class="sub">Si prefieres, transfiere el valor y env&iacute;a tu comprobante por WhatsApp.</p>
+
+          <div class="pago-metodos" id="pagoMetodos">
+            <!-- NEQUI -->
             <div class="pago-metodo">
-              <div class="pm-icon" style="background:rgba(150,60,200,.15)">&#x1F4F1;</div>
+              <div class="pm-icon" style="background:rgba(150,60,200,.15);font-size:20px">&#x1F4F1;</div>
               <div class="pm-info">
-                <div class="pm-name">Nequi (Transferencia manual)</div>
-                <div class="pm-detail" id="pagoNequi"></div>
+                <div class="pm-name">Nequi</div>
+                <div class="pm-detail" id="pagoNequi">3104717982</div>
               </div>
               <div class="pm-action">
                 <button class="btn-copy" onclick="copiarDato(pagoNequiNum, this)">Copiar n&uacute;mero</button>
               </div>
             </div>
 
-            <!-- 4. DAVIPLATA MANUAL -->
+            <!-- DAVIPLATA -->
             <div class="pago-metodo">
-              <div class="pm-icon" style="background:rgba(255,80,0,.12)">&#x1F4F2;</div>
+              <div class="pm-icon" style="background:rgba(255,80,0,.12);font-size:20px">&#x1F4F2;</div>
               <div class="pm-info">
-                <div class="pm-name">Daviplata (Transferencia manual)</div>
-                <div class="pm-detail" id="pagoDaviplata"></div>
+                <div class="pm-name">Daviplata</div>
+                <div class="pm-detail" id="pagoDaviplata">3104717982</div>
               </div>
               <div class="pm-action">
                 <button class="btn-copy" onclick="copiarDato(pagoDaviplataNum, this)">Copiar n&uacute;mero</button>
               </div>
             </div>
 
-            <!-- 5. TRANSFERENCIA BANCARIA -->
+            <!-- BANCOLOMBIA -->
             <div class="pago-metodo">
-              <div class="pm-icon" style="background:rgba(96,165,250,.12)">&#x1F3E6;</div>
+              <div class="pm-icon" style="background:rgba(96,165,250,.12);font-size:20px">&#x1F3E6;</div>
               <div class="pm-info">
-                <div class="pm-name">Transferencia Bancaria</div>
-                <div class="pm-detail" id="pagoBanco">Consultar datos de cuenta institucional por WhatsApp</div>
+                <div class="pm-name">Transferencia bancaria</div>
+                <div class="pm-detail" id="pagoBanco">Bancolombia Ahorros: 31383188833</div>
+              </div>
+              <div class="pm-action">
+                <button class="btn-copy" onclick="copiarDato('31383188833', this)">Copiar cuenta</button>
               </div>
             </div>
           </div>
@@ -1377,6 +1373,8 @@ async function apartarBoletos(){
 
     document.getElementById('pagoNequi').textContent='310 471 7982';
     document.getElementById('pagoDaviplata').textContent='310 471 7982';
+    const pb=document.getElementById('pagoBanco');
+    if(pb) pb.textContent='Bancolombia Ahorros: 31383188833';
 
     document.getElementById('seleccionWrap').style.display='none';
     document.getElementById('pagoWrap').style.display='block';
